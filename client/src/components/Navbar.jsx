@@ -30,13 +30,13 @@ export default function Navbar() {
 
       <nav className="sticky top-0 left-0 right-0 z-50 bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 gap-4">
+          <div className="flex items-center justify-between h-16 gap-2 sm:gap-4">
 
             <a href="#home" className="flex-shrink-0">
-              <img src="/images/Logo.jpg" alt="Melado" className="h-10 w-auto rounded" />
+              <img src="/images/Logo.jpg" alt="Melado" className="h-8 sm:h-10 w-auto rounded" />
             </a>
 
-            <div className="flex-1 max-w-md hidden sm:block">
+            <div className="flex-1 min-w-0 max-w-md">
               <div className="flex items-center border-2 border-[#45AFC6] rounded-full overflow-hidden bg-white">
                 <div className="pl-4">
                   <Search size={18} className="text-[#45AFC6]" />
@@ -54,10 +54,10 @@ export default function Navbar() {
 
             <button
               onClick={() => setMenuOpen(true)}
-              className="p-2 text-[#45AFC6] hover:text-melado-red transition-colors flex-shrink-0"
+              className="p-1.5 sm:p-2 text-[#45AFC6] hover:text-melado-red transition-colors flex-shrink-0"
               aria-label="Open menu"
             >
-              <Menu size={26} />
+              <Menu size={24} />
             </button>
 
           </div>
@@ -97,7 +97,7 @@ export default function Navbar() {
                     onClick={(e) => { e.preventDefault(); handleNav(link.href); }}
                     className="flex items-center gap-3 font-heading font-semibold text-melado-maroon px-4 py-3 rounded-xl hover:bg-melado-pink/20 transition-colors group"
                   >
-                    <link.icon size={18} className="text-[#45AFC6] group-hover:text-melado-red transition-colors" />
+                    <link.icon size={18} className="text-[#45AFC6] group-hover:text-[#F8789C] transition-colors" />
                     <span>{link.name}</span>
                   </a>
                 ))}
@@ -107,10 +107,15 @@ export default function Navbar() {
                 {selectedCity && (
                   <button
                     onClick={() => { changeCity(); setMenuOpen(false); }}
-                    className="flex items-center gap-2 text-sm text-melado-maroon/60 font-body w-full px-4 py-2 rounded-xl hover:bg-melado-pink/20 transition-colors"
+                    className="flex items-center gap-3 text-sm font-body w-full px-4 py-3 rounded-xl border-2 border-[#F8789C]/30 bg-[#F8789C]/5 hover:bg-[#F8789C]/10 transition-colors group"
                   >
-                    <MapPin size={14} className="text-melado-rose" />
-                    <span>{selectedCity.name}</span>
+                    <div className="w-8 h-8 bg-[#F8789C]/10 rounded-lg flex items-center justify-center group-hover:bg-[#F8789C]/20 transition-colors">
+                      <MapPin size={16} className="text-[#F8789C]" />
+                    </div>
+                    <div className="text-left">
+                      <p className="text-[11px] font-semibold text-[#F8789C] uppercase tracking-wider">Change Location</p>
+                      <p className="text-sm font-medium text-melado-maroon">{selectedCity.name}</p>
+                    </div>
                   </button>
                 )}
 

@@ -12,9 +12,9 @@ export default function FlavorMarquee() {
   const doubledFlavors = [...flavors, ...flavors];
 
   return (
-    <div className="bg-melado-maroon py-4 overflow-hidden relative">
-      <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-melado-maroon to-transparent z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-melado-maroon to-transparent z-10" />
+    <div className="bg-[#F8789C] py-4 overflow-hidden relative">
+      <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#F8789C] to-transparent z-10" />
+      <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#F8789C] to-transparent z-10" />
 
       <div className="flex animate-marquee whitespace-nowrap">
         {doubledFlavors.map((flavor, i) => (

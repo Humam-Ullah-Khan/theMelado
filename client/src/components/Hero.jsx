@@ -2,8 +2,8 @@ import { ArrowRight } from 'lucide-react';
 
 export default function Hero() {
   return (
-    <section id="home" className="relative overflow-hidden">
-      <div className="relative bg-[#F8E0EB] min-h-[400px] md:min-h-[480px] lg:min-h-[520px] overflow-hidden">
+    <section id="home" className="px-4 md:px-6 lg:px-8 pt-4 md:pt-6 pb-4 md:pb-6">
+      <div className="relative bg-[#F8E0EB] min-h-[400px] md:min-h-[480px] lg:min-h-[520px] rounded-3xl overflow-hidden shadow-sm">
         <div className="absolute inset-0">
           <div className="absolute top-0 left-0 right-0 bottom-0" style={{
             background: 'radial-gradient(ellipse at 70% 50%, rgba(232,50,42,0.08) 0%, transparent 60%)',
@@ -43,7 +43,7 @@ export default function Hero() {
                 Taste the difference
               </p>
 
-              <a href="#menu" className="inline-flex items-center gap-3 bg-[#45AFC6] hover:bg-[#3A9AB0] text-white font-heading font-bold text-base md:text-lg px-8 py-4 rounded-full transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 group">
+              <a href="#menu" className="inline-flex items-center gap-3 bg-[#45AFC6] hover:bg-[#45AFC6] text-white font-heading font-bold text-base md:text-lg px-8 py-4 rounded-full transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 group">
                 VIEW MENU
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </a>

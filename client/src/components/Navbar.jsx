@@ -1,110 +1,144 @@
 import { useState, useEffect } from 'react';
 import { useCity } from '../context/CityContext';
-import { Menu, X, ChevronDown, Search } from 'lucide-react';
+import { Menu, X, Search, ArrowRight, MapPin, Instagram, Home, IceCream2, BookOpen, MapPinned, Phone } from 'lucide-react';
+
+const navLinks = [
+  { name: 'Shop', href: '#menu', icon: IceCream2 },
+  { name: 'Flavors', href: '#menu', icon: IceCream2 },
+  { name: 'Story', href: '#story', icon: BookOpen },
+  { name: 'Locations', href: '#visit', icon: MapPinned },
+  { name: 'Contact Us', href: '#visit', icon: Phone },
+];
 
 export default function Navbar() {
   const { selectedCity, changeCity } = useCity();
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const navLinks = [
-    { name: 'Shop', href: '#menu' },
-    { name: 'Flavors', href: '#', hasDropdown: true },
-    { name: 'Story', href: '#story' },
-    { name: 'Locations', href: '#visit' },
-    { name: 'Contact Us', href: '#visit' },
-  ];
+  const handleNav = (href) => {
+    setMenuOpen(false);
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <>
-      <div className="bg-melado-maroon text-white text-[11px] font-heading font-bold tracking-widest uppercase">
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-2">
-          <span className="flex items-center gap-1.5">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-            Crafted Daily
-          </span>
+      <div className="bg-[#F8789C] text-white text-[11px] font-heading font-bold tracking-widest uppercase">
+        <div className="max-w-7xl mx-auto flex items-center justify-center px-4 py-2">
           <span>Premium Dairy Ice Cream by Guluna</span>
-          <span className="flex items-center gap-1.5">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-            Crafted Daily
-          </span>
         </div>
       </div>
 
-      <nav className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 bg-white ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
+      <nav className="sticky top-0 left-0 right-0 z-50 bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 md:h-18">
+          <div className="flex items-center justify-between h-16 gap-4">
 
-            <a href="#home" className="flex items-center flex-shrink-0">
-              <img src="/images/Logo.jpg" alt="Melado" className="h-12 w-auto rounded" />
+            <a href="#home" className="flex-shrink-0">
+              <img src="/images/Logo.jpg" alt="Melado" className="h-10 w-auto rounded" />
             </a>
 
-            <div className="hidden lg:flex items-center gap-1">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="font-heading font-semibold px-4 py-2 text-sm text-melado-maroon hover:text-melado-red transition-colors duration-200 flex items-center gap-1"
-                >
-                  {link.name}
-                  {link.hasDropdown && <ChevronDown size={14} className="opacity-50" />}
-                </a>
-              ))}
-            </div>
-
-            <div className="hidden lg:flex items-center gap-4">
-
-              <button className="text-melado-maroon hover:text-melado-red transition-colors p-1" aria-label="Search">
-                <Search size={20} strokeWidth={2} />
-              </button>
-
-              <button className="font-heading font-bold text-sm text-melado-maroon border-2 border-melado-maroon px-6 py-2.5 rounded-full hover:bg-melado-maroon hover:text-white transition-all duration-200 flex items-center gap-2 ml-1">
-                ORDER NOW
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </button>
-            </div>
-
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-2 text-melado-maroon"
-              aria-label="Toggle menu"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
-
-        {isOpen && (
-          <div className="lg:hidden bg-white border-t border-gray-100 shadow-xl animate-slide-down">
-            <div className="px-4 py-3 space-y-1">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="block font-heading font-semibold text-melado-maroon px-4 py-3 rounded-xl hover:bg-melado-pink/20 transition-colors"
-                >
-                  {link.name}
-                </a>
-              ))}
-              <div className="border-t border-gray-100 pt-3 mt-3">
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="font-heading font-bold text-sm text-melado-maroon border-2 border-melado-maroon flex items-center justify-center gap-2 w-full py-3 rounded-xl hover:bg-melado-maroon hover:text-white transition-all"
-                >
-                  ORDER NOW
+            <div className="flex-1 max-w-md hidden sm:block">
+              <div className="flex items-center border-2 border-[#45AFC6] rounded-full overflow-hidden bg-white">
+                <div className="pl-4">
+                  <Search size={18} className="text-[#45AFC6]" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search for Vanilla Nutty Swirl..."
+                  className="flex-1 px-3 py-2.5 text-sm font-body text-melado-maroon placeholder:text-melado-maroon/30 focus:outline-none bg-transparent"
+                />
+                <button className="bg-[#45AFC6] hover:bg-[#45AFC6] transition-colors w-10 h-10 flex items-center justify-center flex-shrink-0 m-0.5 rounded-full">
+                  <ArrowRight size={16} className="text-white" />
                 </button>
               </div>
             </div>
+
+            <button
+              onClick={() => setMenuOpen(true)}
+              className="p-2 text-[#45AFC6] hover:text-melado-red transition-colors flex-shrink-0"
+              aria-label="Open menu"
+            >
+              <Menu size={26} />
+            </button>
+
           </div>
-        )}
+        </div>
       </nav>
+
+      <div
+        className={`fixed inset-0 z-[90] transition-opacity duration-300 ${
+          menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="absolute inset-0 bg-black/40" onClick={() => setMenuOpen(false)} />
+
+          <div className={`absolute right-0 top-0 bottom-0 w-[300px] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${
+            menuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}>
+
+            <div className="flex items-center justify-between p-5 border-b border-gray-100">
+              <img src="/images/Logo.jpg" alt="Melado" className="h-9 w-auto rounded" />
+              <button
+                onClick={() => setMenuOpen(false)}
+                className="w-8 h-8 bg-melado-pink hover:bg-melado-rose rounded-full flex items-center justify-center transition-colors"
+                aria-label="Close menu"
+              >
+                <X size={16} className="text-melado-maroon" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto">
+              <div className="p-4 space-y-1">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={(e) => { e.preventDefault(); handleNav(link.href); }}
+                    className="flex items-center gap-3 font-heading font-semibold text-melado-maroon px-4 py-3 rounded-xl hover:bg-melado-pink/20 transition-colors group"
+                  >
+                    <link.icon size={18} className="text-[#45AFC6] group-hover:text-melado-red transition-colors" />
+                    <span>{link.name}</span>
+                  </a>
+                ))}
+              </div>
+
+              <div className="border-t border-gray-100 p-4 space-y-3">
+                {selectedCity && (
+                  <button
+                    onClick={() => { changeCity(); setMenuOpen(false); }}
+                    className="flex items-center gap-2 text-sm text-melado-maroon/60 font-body w-full px-4 py-2 rounded-xl hover:bg-melado-pink/20 transition-colors"
+                  >
+                    <MapPin size={14} className="text-melado-rose" />
+                    <span>{selectedCity.name}</span>
+                  </button>
+                )}
+
+                <a
+                  href="https://instagram.com/meladobyguluna"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-melado-maroon/60 font-body w-full px-4 py-2 rounded-xl hover:bg-melado-pink/20 transition-colors"
+                >
+                  <Instagram size={14} className="text-melado-rose" />
+                  <span>Instagram</span>
+                </a>
+              </div>
+            </div>
+
+            <div className="p-4 border-t border-gray-100">
+              <a
+                href="https://instagram.com/meladobyguluna"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-heading font-bold text-sm text-white bg-[#45AFC6] hover:bg-[#45AFC6] flex items-center justify-center gap-2 py-3 rounded-xl transition-all shadow-md"
+              >
+                ORDER NOW
+                <ArrowRight size={16} />
+              </a>
+            </div>
+          </div>
+        </div>
     </>
   );
 }

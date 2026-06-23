@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Instagram, Facebook, Twitter, MapPin, Heart, ArrowUp } from 'lucide-react';
+import { Instagram, Facebook, MapPin, Heart, ArrowUp } from 'lucide-react';
 import { useCity } from '../context/CityContext';
 
 export default function Footer() {
@@ -31,15 +31,10 @@ export default function Footer() {
               Premium dairy ice cream crafted with love by Guluna. Authentic flavors, real ingredients, unforgettable taste.
             </p>
             <div className="flex items-center gap-3 mt-4">
-              <a href="https://instagram.com/meladobyguluna" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-white/10 rounded-full flex items-center justify-center hover:bg-melado-rose transition-colors" aria-label="Instagram">
+              <a href="https://www.instagram.com/themelado" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-white/10 rounded-full flex items-center justify-center hover:bg-melado-rose transition-colors" aria-label="Instagram">
                 <Instagram size={16} />
               </a>
-              <a href="https://facebook.com/meladobyguluna" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-white/10 rounded-full flex items-center justify-center hover:bg-melado-rose transition-colors" aria-label="Facebook">
-                <Facebook size={16} />
-              </a>
-              <a href="https://twitter.com/meladobyguluna" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-white/10 rounded-full flex items-center justify-center hover:bg-melado-rose transition-colors" aria-label="Twitter">
-                <Twitter size={16} />
-              </a>
+            </div>
             </div>
           </div>
 
@@ -80,21 +75,6 @@ export default function Footer() {
             </div>
           </div>
 
-          <div>
-            <h3 className="font-heading font-bold text-lg mb-4">Order Now</h3>
-            <p className="font-body text-white/60 text-sm mb-4">
-              Craving Melado? Send us a DM on Instagram!
-            </p>
-            <a
-              href="https://instagram.com/meladobyguluna"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-instagram text-sm w-full flex items-center justify-center gap-2"
-            >
-              <Instagram size={16} />
-              Order on Instagram
-            </a>
-          </div>
         </div>
 
         <div className="border-t border-white/10 mt-10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">

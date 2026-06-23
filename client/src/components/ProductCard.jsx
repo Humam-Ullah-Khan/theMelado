@@ -76,7 +76,7 @@ export default function ProductCard({ item }) {
           )}
 
           <a
-            href="https://instagram.com/meladobyguluna"
+            href="https://www.instagram.com/themelado"
             target="_blank"
             rel="noopener noreferrer"
             className="w-full flex items-center justify-center gap-2 bg-melado-red text-white font-heading font-bold text-sm py-2.5 px-4 rounded-xl hover:bg-melado-red-dark transition-all shadow-md hover:shadow-lg"

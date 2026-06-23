@@ -120,7 +120,7 @@ export default function Navbar() {
                 )}
 
                 <a
-                  href="https://instagram.com/meladobyguluna"
+                  href="https://www.instagram.com/themelado"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-sm text-melado-maroon/60 font-body w-full px-4 py-2 rounded-xl hover:bg-melado-pink/20 transition-colors"
@@ -133,7 +133,7 @@ export default function Navbar() {
 
             <div className="p-4 border-t border-gray-100">
               <a
-                href="https://instagram.com/meladobyguluna"
+                href="https://www.instagram.com/themelado"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-heading font-bold text-sm text-white bg-[#45AFC6] hover:bg-[#45AFC6] flex items-center justify-center gap-2 py-3 rounded-xl transition-all shadow-md"

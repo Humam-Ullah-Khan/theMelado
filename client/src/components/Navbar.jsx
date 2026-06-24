@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useCity } from '../context/CityContext';
-import { Menu, X, Search, ArrowRight, MapPin, Instagram, Facebook, IceCream2, BookOpen, MapPinned, Phone } from 'lucide-react';
+import { useFavorites } from '../context/FavoritesContext';
+import FavoritesPopup from './FavoritesPopup';
+import { Menu, X, Search, ArrowRight, MapPin, Instagram, Facebook, Heart, IceCream2, BookOpen, MapPinned, Phone } from 'lucide-react';
 
 const navLinks = [
   { name: 'Shop', href: '#menu', icon: IceCream2 },
@@ -12,7 +14,9 @@ const navLinks = [
 
 export default function Navbar() {
   const { selectedCity, changeCity } = useCity();
+  const { favorites } = useFavorites();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [favOpen, setFavOpen] = useState(false);
 
   const handleNav = (href) => {
     setMenuOpen(false);
@@ -52,13 +56,23 @@ export default function Navbar() {
               </div>
             </div>
 
-            <button
-              onClick={() => setMenuOpen(true)}
-              className="p-1.5 sm:p-2 text-[#45AFC6] hover:text-melado-red transition-colors flex-shrink-0"
-              aria-label="Open menu"
-            >
-              <Menu size={24} />
-            </button>
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <button onClick={() => setFavOpen(true)} className="p-1.5 sm:p-2 text-[#45AFC6] hover:text-melado-red transition-colors relative" aria-label="Favorites">
+                <Heart size={22} className={favorites.length > 0 ? 'fill-[#F8789C] text-[#F8789C]' : ''} />
+                {favorites.length > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#F8789C] text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                    {favorites.length}
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={() => setMenuOpen(true)}
+                className="p-1.5 sm:p-2 text-[#45AFC6] hover:text-melado-red transition-colors"
+                aria-label="Open menu"
+              >
+                <Menu size={24} />
+              </button>
+            </div>
 
           </div>
         </div>
@@ -154,6 +168,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
+      <FavoritesPopup open={favOpen} onClose={() => setFavOpen(false)} />
     </>
   );
 }

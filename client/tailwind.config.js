@@ -27,7 +27,7 @@ export default {
       fontFamily: {
         display: ['"Yeseva One"', 'cursive'],
         heading: ['"Fredoka"', '"Baloo 2"', 'sans-serif'],
-        body: ['"Inter"', 'sans-serif'],
+        body: ['"Poppins"', 'sans-serif'],
       },
       animation: {
         'marquee': 'marquee 30s linear infinite',

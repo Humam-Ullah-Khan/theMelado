@@ -8,6 +8,7 @@ import CategoryCarousel from './components/CategoryCarousel';
 import PopularItems from './components/PopularItems';
 import Popsicles from './components/Popsicles';
 import IceCreams from './components/IceCreams';
+import VideoSection from './components/VideoSection';
 import FlavorMarquee from './components/FlavorMarquee';
 import Footer from './components/Footer';
 import CityPopup from './components/CityPopup';
@@ -23,6 +24,7 @@ function HomePage() {
       <PopularItems />
       <Popsicles />
       <IceCreams />
+      <VideoSection />
       <FlavorMarquee />
       <Footer />
     </>

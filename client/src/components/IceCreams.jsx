@@ -1,19 +1,55 @@
+import { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
 import { useFavorites } from '../context/FavoritesContext';
 
-const iceCreamItems = [
-  { name: 'Kulfa', price: 200, image: '/images/Ice-creem1.jpg', color: 'bg-purple-100', btnGradient: 'from-purple-400 to-violet-400' },
-  { name: 'Malai Kulfa', price: 220, image: '/images/Ice-creem2.jpg', color: 'bg-rose-100', btnGradient: 'from-rose-400 to-red-400' },
-  { name: 'Pistachio Kulfa', price: 240, image: '/images/Ice-creem3.jpg', color: 'bg-[#D4EDDA]', btnGradient: 'from-[#8CD184] to-[#6FB868]' },
-  { name: 'Strawberry', price: 180, image: '/images/Ice-creem4.jpg', color: 'bg-pink-100', btnGradient: 'from-pink-400 to-rose-400' },
-  { name: 'Mango Mania', price: 200, image: '/images/Ice-creem5.jpg', color: 'bg-amber-100', btnGradient: 'from-amber-400 to-orange-400' },
-  { name: 'Vanilla', price: 160, image: '/images/Ice-creem6.jpg', color: 'bg-yellow-100', btnGradient: 'from-yellow-400 to-amber-400' },
-  { name: 'Chocolate', price: 180, image: '/images/Ice-creem7.jpg', color: 'bg-stone-100', btnGradient: 'from-stone-500 to-stone-600' },
-  { name: 'Pistachio', price: 220, image: '/images/Ice-creem8.jpg', color: 'bg-[#D4EDDA]', btnGradient: 'from-[#8CD184] to-[#6FB868]' },
+const COLOR_KEYS = ['purple', 'rose', 'green', 'pink', 'amber', 'yellow', 'stone', 'green'];
+const COLOR_MAP = {
+  purple: { color: 'bg-purple-100', btnGradient: 'from-purple-400 to-violet-400' },
+  rose: { color: 'bg-rose-100', btnGradient: 'from-rose-400 to-red-400' },
+  green: { color: 'bg-[#D4EDDA]', btnGradient: 'from-[#8CD184] to-[#6FB868]' },
+  pink: { color: 'bg-pink-100', btnGradient: 'from-pink-400 to-rose-400' },
+  amber: { color: 'bg-amber-100', btnGradient: 'from-amber-400 to-orange-400' },
+  yellow: { color: 'bg-yellow-100', btnGradient: 'from-yellow-400 to-amber-400' },
+  stone: { color: 'bg-stone-100', btnGradient: 'from-stone-500 to-stone-600' },
+};
+
+const FALLBACK_ITEMS = [
+  { name: 'Kulfa', singlePrice: 200, image: '/images/Ice-creem1.jpg', colorKey: 'purple' },
+  { name: 'Malai Kulfa', singlePrice: 220, image: '/images/Ice-creem2.jpg', colorKey: 'rose' },
+  { name: 'Pistachio Kulfa', singlePrice: 240, image: '/images/Ice-creem3.jpg', colorKey: 'green' },
+  { name: 'Strawberry', singlePrice: 180, image: '/images/Ice-creem4.jpg', colorKey: 'pink' },
+  { name: 'Mango Mania', singlePrice: 200, image: '/images/Ice-creem5.jpg', colorKey: 'amber' },
+  { name: 'Vanilla', singlePrice: 160, image: '/images/Ice-creem6.jpg', colorKey: 'yellow' },
+  { name: 'Chocolate', singlePrice: 180, image: '/images/Ice-creem7.jpg', colorKey: 'stone' },
+  { name: 'Pistachio', singlePrice: 220, image: '/images/Ice-creem8.jpg', colorKey: 'green' },
 ];
+
+function getColor(index) {
+  const key = COLOR_KEYS[index % COLOR_KEYS.length];
+  return COLOR_MAP[key];
+}
 
 export default function IceCreams() {
   const { toggleFavorite, isFavorite } = useFavorites();
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/menu?category=Ice Cream Elite').then(r => r.json()),
+      fetch('/api/menu?category=Ice Cream Premium').then(r => r.json()),
+    ])
+      .then(([elite, premium]) => {
+        const all = [...elite, ...premium];
+        if (all.length > 0) {
+          setItems(all.map((item, i) => ({ ...item, ...getColor(i) })));
+        } else {
+          setItems(FALLBACK_ITEMS.map((item, i) => ({ ...item, ...getColor(i) })));
+        }
+      })
+      .catch(() => {
+        setItems(FALLBACK_ITEMS.map((item, i) => ({ ...item, ...getColor(i) })));
+      });
+  }, []);
 
   return (
     <section className="py-10 md:py-14 bg-white">
@@ -26,9 +62,9 @@ export default function IceCreams() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
-          {iceCreamItems.map((item) => (
+          {items.map((item) => (
             <div
-              key={item.name}
+              key={item._id || item.name}
               className={`${item.color} rounded-3xl flex flex-col transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg`}
             >
               <div className="aspect-square rounded-2xl overflow-hidden mb-3 flex items-center justify-center bg-white/50">
@@ -45,7 +81,7 @@ export default function IceCreams() {
               </h3>
 
               <span className="font-heading font-bold text-melado-maroon text-sm mb-3 px-4">
-                Rs. {item.price}
+                Rs. {item.singlePrice || item.price || 0}
               </span>
 
               <button

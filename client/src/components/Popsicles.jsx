@@ -1,19 +1,61 @@
+import { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
 import { useFavorites } from '../context/FavoritesContext';
 
-const popsicleItems = [
-  { name: 'JAMUN', price: 150, image: '/images/Popsical1.jpg', color: 'bg-purple-100', btnGradient: 'from-purple-400 to-violet-400' },
-  { name: 'Strawberry', price: 150, image: '/images/Popsical2.jpg', color: 'bg-pink-100', btnGradient: 'from-pink-400 to-rose-400' },
-  { name: 'KIWI', price: 150, image: '/images/Popsical3.jpg', color: 'bg-[#D4EDDA]', btnGradient: 'from-[#8CD184] to-[#6FB868]' },
-  { name: 'LEMON', price: 150, image: '/images/Popsical4.jpg', color: 'bg-yellow-100', btnGradient: 'from-yellow-400 to-amber-400' },
-  { name: 'BELGIAN CHOCOLATE', price: 150, image: '/images/Popsical5.jpg', color: 'bg-stone-100', btnGradient: 'from-stone-500 to-stone-600' },
-  { name: 'MINT', price: 150, image: '/images/Popsical6.jpg', color: 'bg-[#D4EDDA]', btnGradient: 'from-[#8CD184] to-[#6FB868]' },
-  { name: 'MANGO', price: 150, image: '/images/Popsical7.jpg', color: 'bg-amber-100', btnGradient: 'from-amber-400 to-orange-400' },
-  { name: 'ALOO BUKHARA', price: 150, image: '/images/Popsical8.jpg', color: 'bg-rose-100', btnGradient: 'from-rose-400 to-red-400' },
+const COLOR_MAP = {
+  purple: { color: 'bg-purple-100', btnGradient: 'from-purple-400 to-violet-400' },
+  pink: { color: 'bg-pink-100', btnGradient: 'from-pink-400 to-rose-400' },
+  green: { color: 'bg-[#D4EDDA]', btnGradient: 'from-[#8CD184] to-[#6FB868]' },
+  yellow: { color: 'bg-yellow-100', btnGradient: 'from-yellow-400 to-amber-400' },
+  stone: { color: 'bg-stone-100', btnGradient: 'from-stone-500 to-stone-600' },
+  amber: { color: 'bg-amber-100', btnGradient: 'from-amber-400 to-orange-400' },
+  rose: { color: 'bg-rose-100', btnGradient: 'from-rose-400 to-red-400' },
+};
+
+const FALLBACK_ITEMS = [
+  { name: 'JAMUN', singlePrice: 150, image: '/images/Popsical1.jpg', colorKey: 'purple' },
+  { name: 'Strawberry', singlePrice: 150, image: '/images/Popsical2.jpg', colorKey: 'pink' },
+  { name: 'KIWI', singlePrice: 150, image: '/images/Popsical3.jpg', colorKey: 'green' },
+  { name: 'LEMON', singlePrice: 150, image: '/images/Popsical4.jpg', colorKey: 'yellow' },
+  { name: 'BELGIAN CHOCOLATE', singlePrice: 150, image: '/images/Popsical5.jpg', colorKey: 'stone' },
+  { name: 'MINT', singlePrice: 150, image: '/images/Popsical6.jpg', colorKey: 'green' },
+  { name: 'MANGO', singlePrice: 150, image: '/images/Popsical7.jpg', colorKey: 'amber' },
+  { name: 'ALOO BUKHARA', singlePrice: 150, image: '/images/Popsical8.jpg', colorKey: 'rose' },
 ];
+
+const COLOR_KEYS = Object.keys(COLOR_MAP);
+
+function getColorForItem(index) {
+  return COLOR_MAP[COLOR_KEYS[index % COLOR_KEYS.length]];
+}
 
 export default function Popsicles() {
   const { toggleFavorite, isFavorite } = useFavorites();
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/menu?category=Popsicles')
+      .then(res => res.json())
+      .then(data => {
+        if (data.length > 0) {
+          setItems(data.map((item, i) => ({
+            ...item,
+            ...getColorForItem(i)
+          })));
+        } else {
+          setItems(FALLBACK_ITEMS.map((item, i) => ({
+            ...item,
+            ...getColorForItem(i)
+          })));
+        }
+      })
+      .catch(() => {
+        setItems(FALLBACK_ITEMS.map((item, i) => ({
+          ...item,
+          ...getColorForItem(i)
+        })));
+      });
+  }, []);
 
   return (
     <section className="py-10 md:py-14 bg-white">
@@ -26,9 +68,9 @@ export default function Popsicles() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
-          {popsicleItems.map((item) => (
+          {items.map((item, index) => (
             <div
-              key={item.name}
+              key={item._id || item.name}
               className={`${item.color} rounded-3xl flex flex-col transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg`}
             >
               <div className="aspect-square rounded-2xl overflow-hidden mb-3 flex items-center justify-center bg-white/50">
@@ -45,7 +87,7 @@ export default function Popsicles() {
               </h3>
 
               <span className="font-heading font-bold text-melado-maroon text-sm mb-3 px-4">
-                Rs. {item.price}
+                Rs. {item.singlePrice || item.price || 0}
               </span>
 
               <button

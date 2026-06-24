@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 const menuRoutes = require('./routes/menu');
 const adminRoutes = require('./routes/admin');
 const cityRoutes = require('./routes/cities');
+const uploadRoutes = require('./routes/upload');
+const videoRoutes = require('./routes/videos');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,6 +22,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/melado')
 app.use('/api/menu', menuRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/cities', cityRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/videos', videoRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', brand: 'Melado by Guluna' });

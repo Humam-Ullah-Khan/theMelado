@@ -126,3 +126,6 @@
 .cat-desserts { @apply bg-gradient-to-r from-melado-maroon to-melado-terracotta; }
 .cat-kids-corner { @apply bg-gradient-to-r from-yellow-400 to-pink-400; }
 .cat-super-cup { @apply bg-gradient-to-r from-melado-terracotta to-yellow-500; }
+
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

@@ -3,6 +3,7 @@ import { CityProvider } from './context/CityContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import CategoryCarousel from './components/CategoryCarousel';
 import FlavorMarquee from './components/FlavorMarquee';
 import MenuSection from './components/MenuSection';
 import WhyUs from './components/WhyUs';
@@ -17,6 +18,7 @@ function HomePage() {
       <Navbar />
       <CityPopup />
       <Hero />
+      <CategoryCarousel />
       <FlavorMarquee />
       <MenuSection />
       <WhyUs />

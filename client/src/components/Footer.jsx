@@ -21,7 +21,7 @@ export default function Footer() {
   return (
     <footer className="bg-melado-maroon text-white">
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div>
             <button onClick={handleEasterEgg} className="flex items-center gap-2 mb-4 group">
               <img src="/images/Logo.jpg" alt="Melado" className="h-9 w-auto rounded group-hover:brightness-110 transition-all" />
@@ -34,7 +34,9 @@ export default function Footer() {
               <a href="https://www.instagram.com/themelado" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-white/10 rounded-full flex items-center justify-center hover:bg-melado-rose transition-colors" aria-label="Instagram">
                 <Instagram size={16} />
               </a>
-            </div>
+              <a href="https://www.facebook.com/themelado" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-white/10 rounded-full flex items-center justify-center hover:bg-melado-rose transition-colors" aria-label="Facebook">
+                <Facebook size={16} />
+              </a>
             </div>
           </div>
 

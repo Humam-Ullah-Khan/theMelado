@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useCity } from '../context/CityContext';
-import { Menu, X, Search, ArrowRight, MapPin, Instagram, Home, IceCream2, BookOpen, MapPinned, Phone } from 'lucide-react';
+import { Menu, X, Search, ArrowRight, MapPin, Instagram, Facebook, IceCream2, BookOpen, MapPinned, Phone } from 'lucide-react';
 
 const navLinks = [
   { name: 'Shop', href: '#menu', icon: IceCream2 },
@@ -37,17 +37,17 @@ export default function Navbar() {
             </a>
 
             <div className="flex-1 min-w-0 max-w-md">
-              <div className="flex items-center border-2 border-[#45AFC6] rounded-full overflow-hidden bg-white">
-                <div className="pl-4">
-                  <Search size={18} className="text-[#45AFC6]" />
+              <div className="flex items-center border-2 border-[#45AFC6] rounded-full bg-white">
+                <div className="pl-3 sm:pl-4 flex-shrink-0">
+                  <Search size={16} className="text-[#45AFC6]" />
                 </div>
                 <input
                   type="text"
-                  placeholder="Search for Vanilla Nutty Swirl..."
-                  className="flex-1 px-3 py-2.5 text-sm font-body text-melado-maroon placeholder:text-melado-maroon/30 focus:outline-none bg-transparent"
+                  placeholder="Search..."
+                  className="flex-1 min-w-0 px-2 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm font-body text-melado-maroon placeholder:text-melado-maroon/30 focus:outline-none bg-transparent"
                 />
-                <button className="bg-[#45AFC6] hover:bg-[#45AFC6] transition-colors w-10 h-10 flex items-center justify-center flex-shrink-0 m-0.5 rounded-full">
-                  <ArrowRight size={16} className="text-white" />
+                <button className="bg-[#45AFC6] hover:bg-[#45AFC6] transition-colors w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center flex-shrink-0 m-0.5 rounded-full">
+                  <ArrowRight size={14} className="text-white" />
                 </button>
               </div>
             </div>
@@ -127,6 +127,16 @@ export default function Navbar() {
                 >
                   <Instagram size={14} className="text-melado-rose" />
                   <span>Instagram</span>
+                </a>
+
+                <a
+                  href="https://www.facebook.com/themelado"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-melado-maroon/60 font-body w-full px-4 py-2 rounded-xl hover:bg-melado-pink/20 transition-colors"
+                >
+                  <Facebook size={14} className="text-melado-rose" />
+                  <span>Facebook</span>
                 </a>
               </div>
             </div>

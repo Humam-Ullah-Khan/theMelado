@@ -135,3 +135,13 @@
   to { transform: translate(-50%, 0); opacity: 1; }
 }
 .animate-slideDown { animation: slideDown 0.3s ease-out; }
+
+@keyframes toastProgress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+@keyframes toastSlideUp {
+  from { transform: translate(-50%, 0); opacity: 1; }
+  to { transform: translate(-50%, -100%); opacity: 0; }
+}

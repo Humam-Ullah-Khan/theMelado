@@ -6,8 +6,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import CategoryCarousel from './components/CategoryCarousel';
 import PopularItems from './components/PopularItems';
-import Popsicles from './components/Popsicles';
-import IceCreams from './components/IceCreams';
+import DynamicSections from './components/DynamicSections';
 import VideoSection from './components/VideoSection';
 import FlavorMarquee from './components/FlavorMarquee';
 import Footer from './components/Footer';
@@ -22,8 +21,7 @@ function HomePage() {
       <Hero />
       <CategoryCarousel />
       <PopularItems />
-      <Popsicles />
-      <IceCreams />
+      <DynamicSections />
       <VideoSection />
       <FlavorMarquee />
       <Footer />

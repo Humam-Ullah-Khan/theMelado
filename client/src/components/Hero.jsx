@@ -1,10 +1,21 @@
+import { useState, useEffect } from 'react';
+
 export default function Hero() {
+  const [hero, setHero] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/hero')
+      .then(res => res.json())
+      .then(data => setHero(data))
+      .catch(() => {});
+  }, []);
+
   return (
     <section id="home">
       <picture>
-        <source media="(min-width: 768px)" srcSet="/images/DesktopBanner.jfif" />
+        <source media="(min-width: 768px)" srcSet={hero?.desktopBanner || '/images/DesktopBanner.jfif'} />
         <img
-          src="/images/MobileBanner.jpg"
+          src={hero?.mobileBanner || '/images/MobileBanner.jpg'}
           alt="Melado Premium Ice Cream"
           className="w-full h-auto"
         />

@@ -2,6 +2,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const MenuItem = require('./models/MenuItem');
 const Admin = require('./models/Admin');
+const Section = require('./models/Section');
 
 const seedData = [
   // ── New Arrivals ──
@@ -160,6 +161,16 @@ async function seed() {
       console.log('Admin user created (admin / melado2024)');
     } else {
       console.log('Admin user already exists');
+    }
+
+    const sectionCount = await Section.countDocuments();
+    if (sectionCount === 0) {
+      const allCats = [...new Set(seedData.map(i => i.category))];
+      const sections = allCats.map((cat, i) => ({ heading: cat, subheading: '', type: 'category', order: i }));
+      await Section.insertMany(sections);
+      console.log(`${sections.length} sections seeded`);
+    } else {
+      console.log('Sections already exist');
     }
 
     console.log('Seeding complete!');

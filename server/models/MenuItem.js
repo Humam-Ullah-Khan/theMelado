@@ -4,21 +4,7 @@ const menuItemSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
   category: {
     type: String,
-    required: true,
-    enum: [
-      'New Arrivals',
-      'Ice Cream Elite',
-      'Ice Cream Premium',
-      'Shakes',
-      'Popsicles',
-      'Toppings',
-      'Sundaes',
-      'Boba Cup',
-      'Chillers',
-      'Desserts',
-      'Kids Corner',
-      'Super Cup'
-    ]
+    required: true
   },
   description: { type: String, default: '' },
   prices: {

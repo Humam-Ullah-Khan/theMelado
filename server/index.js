@@ -8,6 +8,9 @@ const adminRoutes = require('./routes/admin');
 const cityRoutes = require('./routes/cities');
 const uploadRoutes = require('./routes/upload');
 const videoRoutes = require('./routes/videos');
+const sectionRoutes = require('./routes/sections');
+const carouselCategoryRoutes = require('./routes/carouselCategories');
+const heroRoutes = require('./routes/hero');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -24,6 +27,9 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/cities', cityRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/videos', videoRoutes);
+app.use('/api/sections', sectionRoutes);
+app.use('/api/carousel-categories', carouselCategoryRoutes);
+app.use('/api/hero', heroRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', brand: 'Melado by Guluna' });

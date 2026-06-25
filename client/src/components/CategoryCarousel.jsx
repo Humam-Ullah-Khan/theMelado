@@ -21,11 +21,11 @@ export default function CategoryCarousel() {
               key={cat._id}
               className="flex-shrink-0 snap-start cursor-pointer group text-center"
             >
-              <div className="bg-[#F8789C] rounded-full flex items-center justify-center w-[80px] h-[80px] md:w-[130px] md:h-[130px]">
+              <div className="bg-[#F8789C] rounded-2xl overflow-hidden w-[80px] h-[80px] md:w-[130px] md:h-[130px]">
                 <img
                   src={cat.image}
                   alt={cat.heading}
-                  className="w-[60px] h-[60px] md:w-[100px] md:h-[100px] object-contain transition-transform duration-300 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
               </div>
               <p className="font-heading font-bold text-[10px] md:text-sm text-melado-maroon mt-2 leading-tight whitespace-nowrap">

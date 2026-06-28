@@ -1,6 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const MenuItem = require('./models/MenuItem');
+const Product = require('./models/Product');
 const Admin = require('./models/Admin');
 const Section = require('./models/Section');
 
@@ -146,14 +146,14 @@ const seedData = [
 
 async function seed() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/melado');
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/melado-by-guluna');
     console.log('MongoDB connected for seeding');
 
-    await MenuItem.deleteMany({});
-    console.log('Cleared existing menu items');
+    await Product.deleteMany({});
+    console.log('Cleared existing products');
 
-    await MenuItem.insertMany(seedData);
-    console.log(`Seeded ${seedData.length} menu items`);
+    await Product.insertMany(seedData);
+    console.log(`Seeded ${seedData.length} products`);
 
     const adminExists = await Admin.findOne({ username: 'admin' });
     if (!adminExists) {

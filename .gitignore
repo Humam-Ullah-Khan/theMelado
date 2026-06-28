@@ -4,5 +4,7 @@ dist/
 *.log
 .DS_Store
 client/dist/
+client/public/images/uploads/
+client/public/videos/
 mongodb-data/
 nul

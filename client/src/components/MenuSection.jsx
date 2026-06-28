@@ -45,7 +45,8 @@ export default function MenuSection() {
   async function fetchMenuItems() {
     try {
       const res = await fetch('/api/menu');
-      const data = await res.json();
+      const data = res.ok ? await res.json() : [];
+      if (!Array.isArray(data)) { setMenuItems([]); setCategories([]); return; }
       setMenuItems(data);
       const uniqueCats = [...new Set(data.map(item => item.category))];
       const sorted = categoryOrder.filter(c => uniqueCats.includes(c));

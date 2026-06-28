@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const MenuItem = require('../models/MenuItem');
+const Product = require('../models/Product');
 const auth = require('../middleware/auth');
 
 router.get('/', async (req, res) => {
@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     if (category) filter.category = category;
     if (featured) filter.featured = featured === 'true';
     if (available !== undefined) filter.available = available === 'true';
-    const items = await MenuItem.find(filter).sort({ order: 1, name: 1 });
+    const items = await Product.find(filter).sort({ order: 1, name: 1 });
     res.json(items);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 
 router.get('/categories', async (req, res) => {
   try {
-    const categories = await MenuItem.distinct('category');
+    const categories = await Product.distinct('category');
     res.json(categories);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -28,7 +28,7 @@ router.get('/categories', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const item = await MenuItem.findById(req.params.id);
+    const item = await Product.findById(req.params.id);
     if (!item) return res.status(404).json({ message: 'Item not found' });
     res.json(item);
   } catch (err) {
@@ -37,8 +37,8 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', auth, async (req, res) => {
-  const item = new MenuItem(req.body);
   try {
+    const item = new Product(req.body);
     const newItem = await item.save();
     res.status(201).json(newItem);
   } catch (err) {
@@ -48,7 +48,7 @@ router.post('/', auth, async (req, res) => {
 
 router.put('/:id', auth, async (req, res) => {
   try {
-    const item = await MenuItem.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const item = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!item) return res.status(404).json({ message: 'Item not found' });
     res.json(item);
   } catch (err) {
@@ -58,7 +58,7 @@ router.put('/:id', auth, async (req, res) => {
 
 router.delete('/:id', auth, async (req, res) => {
   try {
-    const item = await MenuItem.findByIdAndDelete(req.params.id);
+    const item = await Product.findByIdAndDelete(req.params.id);
     if (!item) return res.status(404).json({ message: 'Item not found' });
     res.json({ message: 'Item deleted' });
   } catch (err) {

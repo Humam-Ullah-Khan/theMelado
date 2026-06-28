@@ -107,23 +107,23 @@ export default function Admin() {
   }
 
   async function fetchItems() {
-    try { const res = await fetch('/api/menu'); setItems(await res.json()); } catch { setToast({ message: 'Failed to load items', type: 'error' }); }
+    try { const res = await fetch('/api/menu'); if (res.ok) setItems(await res.json()); else setItems([]); } catch { setToast({ message: 'Failed to load items', type: 'error' }); setItems([]); }
   }
 
   async function fetchSections() {
-    try { const res = await fetch('/api/sections'); setSections(await res.json()); } catch {}
+    try { const res = await fetch('/api/sections'); if (res.ok) setSections(await res.json()); else setSections([]); } catch { setSections([]); }
   }
 
   async function fetchVideos() {
-    try { const res = await fetch('/api/videos'); setVideos(await res.json()); } catch {}
+    try { const res = await fetch('/api/videos'); if (res.ok) setVideos(await res.json()); else setVideos([]); } catch { setVideos([]); }
   }
 
   async function fetchCarouselCategories() {
-    try { const res = await fetch('/api/carousel-categories'); setCarouselCategories(await res.json()); } catch {}
+    try { const res = await fetch('/api/carousel-categories'); if (res.ok) setCarouselCategories(await res.json()); else setCarouselCategories([]); } catch { setCarouselCategories([]); }
   }
 
   async function fetchHeroBanners() {
-    try { const res = await fetch('/api/hero'); setHeroBanners(await res.json()); } catch {}
+    try { const res = await fetch('/api/hero'); if (res.ok) setHeroBanners(await res.json()); else setHeroBanners(null); } catch { setHeroBanners(null); }
   }
 
   async function uploadHeroBanner(type) {

@@ -19,8 +19,9 @@ export default function DynamicSections() {
 
   useEffect(() => {
     fetch('/api/sections')
-      .then(res => res.json())
+      .then(res => res.ok ? res.json() : [])
       .then(data => {
+        if (!Array.isArray(data)) { setSections([]); return; }
         const filtered = data.filter(s => s.type !== 'hero');
         setSections(filtered);
         filtered.forEach(s => fetchItemsForSection(s.heading));
@@ -30,8 +31,9 @@ export default function DynamicSections() {
 
   function fetchItemsForSection(category) {
     fetch(`/api/menu?category=${encodeURIComponent(category)}`)
-      .then(res => res.json())
+      .then(res => res.ok ? res.json() : [])
       .then(data => {
+        if (!Array.isArray(data)) return;
         setSectionItems(prev => ({
           ...prev,
           [category]: data.filter(item => item.available !== false),

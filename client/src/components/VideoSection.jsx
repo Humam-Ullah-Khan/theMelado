@@ -9,9 +9,9 @@ export default function VideoSection() {
 
   useEffect(() => {
     fetch('/api/videos')
-      .then(res => res.json())
-      .then(setVideos)
-      .catch(() => {});
+      .then(res => res.ok ? res.json() : [])
+      .then(data => setVideos(Array.isArray(data) ? data : []))
+      .catch(() => setVideos([]));
   }, []);
 
   function toggleMute() {

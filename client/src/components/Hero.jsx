@@ -5,7 +5,7 @@ export default function Hero() {
 
   useEffect(() => {
     fetch('/api/hero')
-      .then(res => res.json())
+      .then(res => res.ok ? res.json() : null)
       .then(data => setHero(data))
       .catch(() => {});
   }, []);

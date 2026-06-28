@@ -26,8 +26,9 @@ export default function PopularItems() {
 
   useEffect(() => {
     fetch('/api/menu')
-      .then(res => res.json())
+      .then(res => res.ok ? res.json() : [])
       .then(data => {
+        if (!Array.isArray(data)) return;
         const featured = data.filter(item => item.featured).slice(0, 12);
         if (featured.length > 0) {
           setItems(featured.map(item => ({

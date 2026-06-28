@@ -5,9 +5,9 @@ export default function CategoryCarousel() {
 
   useEffect(() => {
     fetch('/api/carousel-categories')
-      .then(res => res.json())
-      .then(data => setCategories(data))
-      .catch(() => {});
+      .then(res => res.ok ? res.json() : [])
+      .then(data => setCategories(Array.isArray(data) ? data : []))
+      .catch(() => setCategories([]));
   }, []);
 
   if (categories.length === 0) return null;

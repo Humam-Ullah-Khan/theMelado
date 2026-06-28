@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/melado')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/melado-by-guluna')
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 

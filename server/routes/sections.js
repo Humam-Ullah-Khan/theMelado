@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Section = require('../models/Section');
-const MenuItem = require('../models/MenuItem');
+const Product = require('../models/Product');
 const auth = require('../middleware/auth');
 
 router.get('/', async (req, res) => {
@@ -60,7 +60,7 @@ router.delete('/:id', auth, async (req, res) => {
   try {
     const section = await Section.findByIdAndDelete(req.params.id);
     if (!section) return res.status(404).json({ message: 'Section not found' });
-    await MenuItem.updateMany({ category: section.heading }, { category: 'Uncategorized' });
+    await Product.updateMany({ category: section.heading }, { category: 'Uncategorized' });
     res.json({ message: 'Section deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });

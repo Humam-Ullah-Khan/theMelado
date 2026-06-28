@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useCity } from '../context/CityContext';
 import { useFavorites } from '../context/FavoritesContext';
 import FavoritesPopup from './FavoritesPopup';
@@ -17,6 +17,46 @@ export default function Navbar() {
   const { favorites } = useFavorites();
   const [menuOpen, setMenuOpen] = useState(false);
   const [favOpen, setFavOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const searchRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setShowSearchResults(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  async function handleSearch() {
+    if (!searchQuery.trim()) return;
+    try {
+      const res = await fetch('/api/menu');
+      const data = res.ok ? await res.json() : [];
+      if (Array.isArray(data)) {
+        const q = searchQuery.toLowerCase();
+        const results = data.filter(item =>
+          item.name.toLowerCase().includes(q) ||
+          item.category.toLowerCase().includes(q)
+        );
+        setSearchResults(results);
+        setShowSearchResults(true);
+      }
+    } catch (err) {
+      console.error('Search failed:', err);
+    }
+  }
+
+  const scrollToMenu = () => {
+    setShowSearchResults(false);
+    setSearchQuery('');
+    const el = document.querySelector('#menu');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const handleNav = (href) => {
     setMenuOpen(false);
@@ -40,20 +80,60 @@ export default function Navbar() {
               <img src="/images/Logo.jpg" alt="Melado" className="h-8 sm:h-10 w-auto rounded" />
             </a>
 
-            <div className="flex-1 min-w-0 max-w-md">
+            <div ref={searchRef} className="flex-1 min-w-0 max-w-md relative">
               <div className="flex items-center border-2 border-[#45AFC6] rounded-full bg-white">
                 <div className="pl-3 sm:pl-4 flex-shrink-0">
                   <Search size={16} className="text-[#45AFC6]" />
                 </div>
                 <input
                   type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
                   placeholder="Search..."
                   className="flex-1 min-w-0 px-2 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm font-body text-melado-maroon placeholder:text-melado-maroon/30 focus:outline-none bg-transparent"
                 />
-                <button className="bg-[#45AFC6] hover:bg-[#45AFC6] transition-colors w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center flex-shrink-0 m-0.5 rounded-full">
+                <button onClick={handleSearch} className="bg-[#45AFC6] hover:bg-[#45AFC6] transition-colors w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center flex-shrink-0 m-0.5 rounded-full">
                   <ArrowRight size={14} className="text-white" />
                 </button>
               </div>
+
+              {showSearchResults && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-100 max-h-96 overflow-y-auto z-[100]">
+                  <div className="p-3 border-b border-gray-100">
+                    <p className="text-xs font-body text-gray-400">{searchResults.length} result{searchResults.length !== 1 ? 's' : ''} for "{searchQuery}"</p>
+                  </div>
+                  {searchResults.length === 0 ? (
+                    <div className="p-6 text-center">
+                      <p className="text-sm text-gray-400 font-body">No products found</p>
+                    </div>
+                  ) : (
+                    searchResults.map(item => (
+                      <button
+                        key={item._id}
+                        onClick={scrollToMenu}
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-melado-pink/10 transition-colors text-left"
+                      >
+                        <div className="w-10 h-10 rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden">
+                          <img
+                            src={item.image || '/images/Logo.jpg'}
+                            alt={item.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => { e.target.src = '/images/Logo.jpg'; }}
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-heading font-semibold text-sm text-melado-maroon truncate">{item.name}</p>
+                          <p className="font-body text-xs text-gray-400 truncate">{item.category}</p>
+                        </div>
+                        <span className="font-heading font-bold text-sm text-melado-red flex-shrink-0">
+                          Rs. {item.singlePrice || item.prices?.cup || 0}
+                        </span>
+                      </button>
+                    ))
+                  )}
+                </div>
+              )}
             </div>
 
             <div className="flex items-center gap-1 flex-shrink-0">

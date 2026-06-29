@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
+import ProductPopup from './ProductPopup';
 import { Filter } from 'lucide-react';
 
 const categoryBanners = {
@@ -37,6 +38,8 @@ export default function MenuSection() {
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState('All');
   const [loading, setLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [popupOpen, setPopupOpen] = useState(false);
 
   useEffect(() => {
     fetchMenuItems();
@@ -137,7 +140,7 @@ export default function MenuSection() {
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
                   {items.map(item => (
-                    <ProductCard key={item._id || item.name} item={item} />
+                    <ProductCard key={item._id || item.name} item={item} onSelect={(product) => { setSelectedProduct(product); setPopupOpen(true); }} />
                   ))}
                 </div>
               </div>
@@ -152,12 +155,14 @@ export default function MenuSection() {
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
               {filteredItems.map(item => (
-                <ProductCard key={item._id || item.name} item={item} />
+                <ProductCard key={item._id || item.name} item={item} onSelect={(product) => { setSelectedProduct(product); setPopupOpen(true); }} />
               ))}
             </div>
           </div>
         )}
       </div>
+
+      <ProductPopup item={selectedProduct} open={popupOpen} onClose={() => setPopupOpen(false)} />
     </section>
   );
 }

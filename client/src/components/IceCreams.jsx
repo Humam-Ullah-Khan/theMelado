@@ -13,17 +13,6 @@ const COLOR_MAP = {
   stone: { color: 'bg-stone-100', btnGradient: 'from-stone-500 to-stone-600' },
 };
 
-const FALLBACK_ITEMS = [
-  { name: 'Kulfa', singlePrice: 200, image: '/images/Ice-creem1.jpg', colorKey: 'purple' },
-  { name: 'Malai Kulfa', singlePrice: 220, image: '/images/Ice-creem2.jpg', colorKey: 'rose' },
-  { name: 'Pistachio Kulfa', singlePrice: 240, image: '/images/Ice-creem3.jpg', colorKey: 'green' },
-  { name: 'Strawberry', singlePrice: 180, image: '/images/Ice-creem4.jpg', colorKey: 'pink' },
-  { name: 'Mango Mania', singlePrice: 200, image: '/images/Ice-creem5.jpg', colorKey: 'amber' },
-  { name: 'Vanilla', singlePrice: 160, image: '/images/Ice-creem6.jpg', colorKey: 'yellow' },
-  { name: 'Chocolate', singlePrice: 180, image: '/images/Ice-creem7.jpg', colorKey: 'stone' },
-  { name: 'Pistachio', singlePrice: 220, image: '/images/Ice-creem8.jpg', colorKey: 'green' },
-];
-
 function getColor(index) {
   const key = COLOR_KEYS[index % COLOR_KEYS.length];
   return COLOR_MAP[key];
@@ -32,6 +21,7 @@ function getColor(index) {
 export default function IceCreams() {
   const { toggleFavorite, isFavorite } = useFavorites();
   const [items, setItems] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -42,14 +32,13 @@ export default function IceCreams() {
         const all = [...elite, ...premium];
         if (all.length > 0) {
           setItems(all.map((item, i) => ({ ...item, ...getColor(i) })));
-        } else {
-          setItems(FALLBACK_ITEMS.map((item, i) => ({ ...item, ...getColor(i) })));
         }
       })
-      .catch(() => {
-        setItems(FALLBACK_ITEMS.map((item, i) => ({ ...item, ...getColor(i) })));
-      });
+      .catch(() => {})
+      .finally(() => setLoaded(true));
   }, []);
+
+  if (!loaded || items.length === 0) return null;
 
   return (
     <section className="py-10 md:py-14 bg-white">

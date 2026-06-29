@@ -1,24 +1,9 @@
-import { X, ShoppingBag, Tag, CheckCircle, Clock } from 'lucide-react';
-
-const placeholderImages = {
-  'Ice Cream Elite': 'https://images.unsplash.com/photo-1570197571499-166b36435e9f?w=400&h=400&fit=crop',
-  'Ice Cream Premium': 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=400&fit=crop',
-  'Shakes': 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&h=400&fit=crop',
-  'Popsicles': 'https://images.unsplash.com/photo-1488900128323-21503983a07e?w=400&h=400&fit=crop',
-  'Sundaes': 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=400&fit=crop',
-  'Boba Cup': 'https://images.unsplash.com/photo-1558857563-b371037e2e69?w=400&h=400&fit=crop',
-  'Chillers': 'https://images.unsplash.com/photo-1527661591475-527312dd65f5?w=400&h=400&fit=crop',
-  'Desserts': 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&h=400&fit=crop',
-  'Kids Corner': 'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=400&h=400&fit=crop',
-  'Super Cup': 'https://images.unsplash.com/photo-1488900128323-21503983a07e?w=400&h=400&fit=crop',
-  'New Arrivals': 'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=400&h=400&fit=crop',
-  'Toppings': 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=400&fit=crop',
-};
+import { X, ShoppingBag, Tag, CheckCircle } from 'lucide-react';
 
 export default function ProductPopup({ item, open, onClose }) {
   if (!open || !item) return null;
 
-  const image = item.image || placeholderImages[item.category] || 'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=400&h=400&fit=crop';
+  const image = item.image;
   const hasMultiplePrices = item.prices && (item.prices.cup || item.prices.cone || item.prices.tub);
   const price = item.singlePrice || item.prices?.cup || 0;
 

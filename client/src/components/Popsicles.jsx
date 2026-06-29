@@ -12,17 +12,6 @@ const COLOR_MAP = {
   rose: { color: 'bg-rose-100', btnGradient: 'from-rose-400 to-red-400' },
 };
 
-const FALLBACK_ITEMS = [
-  { name: 'JAMUN', singlePrice: 150, image: '/images/Popsical1.jpg', colorKey: 'purple' },
-  { name: 'Strawberry', singlePrice: 150, image: '/images/Popsical2.jpg', colorKey: 'pink' },
-  { name: 'KIWI', singlePrice: 150, image: '/images/Popsical3.jpg', colorKey: 'green' },
-  { name: 'LEMON', singlePrice: 150, image: '/images/Popsical4.jpg', colorKey: 'yellow' },
-  { name: 'BELGIAN CHOCOLATE', singlePrice: 150, image: '/images/Popsical5.jpg', colorKey: 'stone' },
-  { name: 'MINT', singlePrice: 150, image: '/images/Popsical6.jpg', colorKey: 'green' },
-  { name: 'MANGO', singlePrice: 150, image: '/images/Popsical7.jpg', colorKey: 'amber' },
-  { name: 'ALOO BUKHARA', singlePrice: 150, image: '/images/Popsical8.jpg', colorKey: 'rose' },
-];
-
 const COLOR_KEYS = Object.keys(COLOR_MAP);
 
 function getColorForItem(index) {
@@ -32,6 +21,7 @@ function getColorForItem(index) {
 export default function Popsicles() {
   const { toggleFavorite, isFavorite } = useFavorites();
   const [items, setItems] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     fetch('/api/menu?category=Popsicles')
@@ -42,20 +32,13 @@ export default function Popsicles() {
             ...item,
             ...getColorForItem(i)
           })));
-        } else {
-          setItems(FALLBACK_ITEMS.map((item, i) => ({
-            ...item,
-            ...getColorForItem(i)
-          })));
         }
       })
-      .catch(() => {
-        setItems(FALLBACK_ITEMS.map((item, i) => ({
-          ...item,
-          ...getColorForItem(i)
-        })));
-      });
+      .catch(() => {})
+      .finally(() => setLoaded(true));
   }, []);
+
+  if (!loaded || items.length === 0) return null;
 
   return (
     <section className="py-10 md:py-14 bg-white">

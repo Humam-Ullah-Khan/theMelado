@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CityProvider } from './context/CityContext';
 import { FavoritesProvider } from './context/FavoritesContext';
+import { LoadingProvider, useLoading } from './context/LoadingContext';
 import ErrorBoundary from './components/ErrorBoundary';
+import LoadingScreen from './components/LoadingScreen';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import CategoryCarousel from './components/CategoryCarousel';
@@ -13,9 +15,12 @@ import Footer from './components/Footer';
 import CityPopup from './components/CityPopup';
 import Admin from './pages/Admin';
 
-function HomePage() {
+function HomePageContent() {
+  const { ready } = useLoading();
+
   return (
     <>
+      <LoadingScreen ready={ready} />
       <Navbar />
       <CityPopup />
       <Hero />
@@ -34,12 +39,14 @@ function App() {
     <ErrorBoundary>
       <FavoritesProvider>
         <CityProvider>
-          <Router>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/admin" element={<Admin />} />
-            </Routes>
-          </Router>
+          <LoadingProvider>
+            <Router>
+              <Routes>
+                <Route path="/" element={<HomePageContent />} />
+                <Route path="/admin" element={<Admin />} />
+              </Routes>
+            </Router>
+          </LoadingProvider>
         </CityProvider>
       </FavoritesProvider>
     </ErrorBoundary>

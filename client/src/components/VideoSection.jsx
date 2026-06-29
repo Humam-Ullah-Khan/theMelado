@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useLoading } from '../context/LoadingContext';
 
 export default function VideoSection() {
   const [videos, setVideos] = useState([]);
@@ -6,12 +7,15 @@ export default function VideoSection() {
   const [muted, setMuted] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const popupVideoRef = useRef(null);
+  const { register, done } = useLoading();
 
   useEffect(() => {
+    register('videos');
     fetch('/api/videos')
       .then(res => res.ok ? res.json() : [])
       .then(data => setVideos(Array.isArray(data) ? data : []))
-      .catch(() => setVideos([]));
+      .catch(() => setVideos([]))
+      .finally(() => done('videos'));
   }, []);
 
   function toggleMute() {

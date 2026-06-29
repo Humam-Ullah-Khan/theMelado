@@ -1,30 +1,18 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Heart } from 'lucide-react';
 import { useFavorites } from '../context/FavoritesContext';
-
-const fallbackItems = [
-  { name: 'Hazelnut Shake', price: 690, image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&h=400&fit=crop' },
-  { name: 'Kulfa', price: 200, image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=400&fit=crop' },
-  { name: 'Pistachio Kunafa Cake', price: 840, image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&h=400&fit=crop' },
-  { name: 'Lotus Bliss', price: 240, image: 'https://images.unsplash.com/photo-1488900128323-21503983a07e?w=400&h=400&fit=crop' },
-  { name: 'Chocolate Shake', price: 660, image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&h=400&fit=crop' },
-  { name: 'Watermelon Mint', price: 340, image: 'https://images.unsplash.com/photo-1527661591475-527312dd65f5?w=400&h=400&fit=crop' },
-  { name: 'Matilda Cake', price: 560, image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&h=400&fit=crop' },
-  { name: 'Oreo', price: 200, image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=400&fit=crop' },
-  { name: 'Mango Mania', price: 200, image: 'https://images.unsplash.com/photo-1488900128323-21503983a07e?w=400&h=400&fit=crop' },
-  { name: 'Strawberry Cheesecake', price: 220, image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&h=400&fit=crop' },
-  { name: 'Brownie Sundae', price: 620, image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=400&fit=crop' },
-  { name: 'Pistachio', price: 220, image: 'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=400&h=400&fit=crop' },
-];
+import { useLoading } from '../context/LoadingContext';
 
 export default function PopularItems() {
-  const [items, setItems] = useState(fallbackItems);
+  const [items, setItems] = useState([]);
   const [activeDot, setActiveDot] = useState(0);
   const scrollRef = useRef(null);
   const [totalDots, setTotalDots] = useState(1);
   const { toggleFavorite, isFavorite } = useFavorites();
+  const { register, done } = useLoading();
 
   useEffect(() => {
+    register('popular');
     fetch('/api/menu')
       .then(res => res.ok ? res.json() : [])
       .then(data => {
@@ -38,7 +26,8 @@ export default function PopularItems() {
           })));
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => done('popular'));
   }, []);
 
   const updateDots = useCallback(() => {
@@ -77,6 +66,8 @@ export default function PopularItems() {
       behavior: 'smooth',
     });
   };
+
+  if (items.length === 0) return null;
 
   return (
     <section className="py-10 md:py-14 bg-white">

@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Heart } from 'lucide-react';
 import { useFavorites } from '../context/FavoritesContext';
+import { useLoading } from '../context/LoadingContext';
 
 const COLOR_MAP = [
   { color: 'bg-purple-100', btn: 'from-purple-400 to-violet-400' },
@@ -16,17 +17,22 @@ export default function DynamicSections() {
   const { toggleFavorite, isFavorite } = useFavorites();
   const [sections, setSections] = useState([]);
   const [sectionItems, setSectionItems] = useState({});
+  const { register, done } = useLoading();
+  const pendingRef = useRef(0);
 
   useEffect(() => {
+    register('sections');
     fetch('/api/sections')
       .then(res => res.ok ? res.json() : [])
       .then(data => {
         if (!Array.isArray(data)) { setSections([]); return; }
         const filtered = data.filter(s => s.type !== 'hero');
         setSections(filtered);
+        pendingRef.current = filtered.length;
+        if (filtered.length === 0) { done('sections'); }
         filtered.forEach(s => fetchItemsForSection(s.heading));
       })
-      .catch(() => {});
+      .catch(() => { done('sections'); });
   }, []);
 
   function fetchItemsForSection(category) {
@@ -39,7 +45,11 @@ export default function DynamicSections() {
           [category]: data.filter(item => item.available !== false),
         }));
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        pendingRef.current -= 1;
+        if (pendingRef.current <= 0) done('sections');
+      });
   }
 
   if (sections.length === 0) return null;

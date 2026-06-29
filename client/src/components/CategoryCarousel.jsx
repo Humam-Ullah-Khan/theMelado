@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
+import { useLoading } from '../context/LoadingContext';
 
 export default function CategoryCarousel() {
   const [categories, setCategories] = useState([]);
+  const { register, done } = useLoading();
 
   useEffect(() => {
+    register('categories');
     fetch('/api/carousel-categories')
       .then(res => res.ok ? res.json() : [])
       .then(data => setCategories(Array.isArray(data) ? data : []))
-      .catch(() => setCategories([]));
+      .catch(() => setCategories([]))
+      .finally(() => done('categories'));
   }, []);
 
   if (categories.length === 0) return null;
